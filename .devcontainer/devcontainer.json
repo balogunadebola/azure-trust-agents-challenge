@@ -10,7 +10,7 @@
             "enableNonRootDocker": "true"
         }
     },
-    "postCreateCommand": "pip3 install --user -r requirements.txt",
+    "postCreateCommand": "sudo apt-get update && sudo apt-get install -y software-properties-common && sudo add-apt-repository ppa:ubuntuhandbook1/ffmpeg7 -y && sudo apt-get update && sudo apt-get install -y pkg-config libavformat-dev libavcodec-dev libavdevice-dev libavutil-dev libswscale-dev libswresample-dev libavfilter-dev ffmpeg && pip3 install --user -r requirements.txt",
     "customizations": {
         "vscode": {
             "extensions": [
