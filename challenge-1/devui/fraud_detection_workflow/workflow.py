@@ -297,7 +297,17 @@ def generate_audit_report_from_risk_analysis(risk_analysis_text: str, report_typ
         
         # Analyze risk score for audit conclusions
         risk_score = elements.get("risk_score", 0)
-        if isinstance(risk_score, (int, float)):
+        risk_factors = elements.get("risk_factors", [])
+
+        # Bridging logical gap to escalate risk if severe risk factors are present
+        severe_factors = {"HIGH_RISK_JURISDICTION", "SANCTIONS_CONCERN"}
+        has_severe = any(f in severe_factors for f in risk_factors)
+
+        if has_severe:
+            audit_report["executive_summary"]["audit_conclusion"] = "HIGH RISK - Immediate review required due to severe risk factors"
+            audit_report["compliance_status"]["requires_immediate_action"] = True
+            audit_report["compliance_status"]["compliance_rating"] = "NON_COMPLIANT"
+        elif isinstance(risk_score, (int, float)):
             if risk_score >= 80:
                 audit_report["executive_summary"]["audit_conclusion"] = "HIGH RISK - Immediate review required"
                 audit_report["compliance_status"]["requires_immediate_action"] = True
